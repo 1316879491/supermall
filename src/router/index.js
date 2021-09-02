@@ -36,5 +36,10 @@ const router = new VueRouter({
     mode:'history'
 })
 
+//用于捕获路由重复点击的报错
+const VueRouterPush = VueRouter.prototype.replace
+VueRouter.prototype.replace = function push (to){
+    return VueRouterPush.call(this,to).catch(err=>err)
+}
 
 export default router

@@ -27,7 +27,7 @@ export default {
         display: flex;
         text-align: center;
         font-size: 14px;
-
+        width: 100%;
         padding: 10px 0 20px;
         border-bottom: 8px solid #eee;
     }

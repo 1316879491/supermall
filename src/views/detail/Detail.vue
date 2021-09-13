@@ -8,6 +8,7 @@
             <detail-goods-info :detailInfo="detailInfo" @imageLoad='imageLoad'></detail-goods-info>
             <detail-param-info :paramInfo = 'paramInfo'></detail-param-info>
             <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
+            <good-list :goods='recommends'></good-list>
         </scroll>
     </div>
 </template>
@@ -23,8 +24,10 @@ import DetailParamInfo from './childComponents/DetailParamInfo.vue'
 import DetailCommentInfo from './childComponents/DetailCommentInfo.vue'
 
 import Scroll from 'components/common/scroll/Scroll'
+import GoodList from 'components/content/goods/GoodList'
 
-import {getDetail,GoodsInfo,Shop,GoodsParam} from 'network/detail'
+import {getDetail,GoodsInfo,Shop,GoodsParam,getRecommend} from 'network/detail'
+import {debounce} from 'common/utils'
 
 
 export default {
@@ -37,7 +40,8 @@ export default {
             shop: {},
             detailInfo: {},
             paramInfo: {},
-            commentInfo: {}
+            commentInfo: {},
+            recommends: []
         }
     },
     created () {
@@ -60,6 +64,18 @@ export default {
                 this.commentInfo = data.rate.list[0]
             }
         })
+
+        getRecommend().then(res => {
+            this.recommends = res.data.list
+        })
+    },
+    mounted () {
+
+    const refresh = debounce(this.$refs.scroll.refresh,200)
+
+    this.$bus.$on('itemImageLoad',() => {
+        refresh()
+    })
     },
     components: {
         DetailNavBar,
@@ -69,7 +85,8 @@ export default {
         Scroll,
         DetailGoodsInfo,
         DetailParamInfo,
-        DetailCommentInfo
+        DetailCommentInfo,
+        GoodList
     },
     methods: {
         /*  imageLoad() {

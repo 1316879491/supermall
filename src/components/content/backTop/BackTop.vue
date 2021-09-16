@@ -20,5 +20,6 @@ export default {
     .back-top img {
         width: 43px;
         height: 43px;
+        opacity: 0.8;
     }
 </style>

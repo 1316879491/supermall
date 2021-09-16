@@ -22,6 +22,15 @@
             </div>
         </div>
     </div>
+    <div v-else class="comment-info">
+        <div class="info-header">
+            <div class="header-title">用户评价</div>
+            <div class="header-more">
+                更多
+                <img class="arrow-right" src="~assets/img/common/箭 头.svg"/>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>

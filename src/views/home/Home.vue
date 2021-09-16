@@ -34,7 +34,7 @@ import Scroll from 'components/common/scroll/Scroll'
 import BackTop from 'components/content/backTop/BackTop'
 
 import {getHomeMultiData,getHomeGoods} from 'network/home'
-import {debounce} from '../../common/utils'
+import {itemListenerMixin,backTopMixin} from 'common/mixin'
 
 
 export default {
@@ -48,12 +48,13 @@ export default {
         'sell': {page: 0,list: []},
       },
       currentType : 'pop',
-      isShowBacktop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
+      itemImgListener: null
       /* saveY: 0 */
     }
   },
+  mixins: [itemListenerMixin,backTopMixin],
   created () {
     this.getHomeMultiData()
 
@@ -62,19 +63,16 @@ export default {
     this.getHomeGoods('sell')
   },
   mounted () {
-
-    const refresh = debounce(this.$refs.scroll.refresh,200)
-
-    this.$bus.$on('itemImageLoad',() => {
-      refresh()
-    })
+    
   },
-  /*  activated () {
+  activated () {
     this.$refs.scroll.scrollTo(0,this.saveY)
+    this.$refs.scroll.refresh()
   },
   deactivated () {
     this.saveY = this.$refs.scroll.scroll.y
-  }, */
+    this.$bus.$off('itemImageLoad',this.itemImgListener)
+  },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list
@@ -113,9 +111,6 @@ export default {
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
-    backClick() {
-      this.$refs.scroll.scrollTo(0,0)
-    },
     contentScroll(position) {
       //console.log(position);
       this.isShowBacktop = (-position.y) > 1000
@@ -124,6 +119,7 @@ export default {
     },
     loadMore() {
       this.getHomeGoods(this.currentType)
+      this.$refs.scroll.refresh()
     },
     swiperImageLoad() {
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop

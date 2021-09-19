@@ -1,8 +1,11 @@
 <template>
     <div class="cart-list">
         <scroll class="content" :pull-up-load = "true" ref="scroll">
-            <cart-list-item v-for="(item,index) in cartList" :key="index" :product='item'
-            @remove="remove" :index="index"></cart-list-item>
+            <transition-group
+            leave-active-class="animate__animated animate__backOutLeft">
+                <cart-list-item v-for="(item,index) in cartList" :key="index" :product='item'
+                @remove="remove" :removeIndex="index"></cart-list-item>
+            </transition-group>
         </scroll>
     </div>
 </template>
@@ -17,9 +20,9 @@ import CartListItem from './CartListItem.vue'
 export default {
 name: 'cartList',
 methods: {
-    remove(index) {
+    remove(removeIndex) {
         //console.log(index);
-        this.cartList.splice(index,1);
+        this.cartList.splice(removeIndex,1);
     }  
 },
 computed: {

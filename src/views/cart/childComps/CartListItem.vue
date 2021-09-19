@@ -15,7 +15,7 @@
                     <img class="images" src="~assets/img/cart/-.svg" alt="" @click="isSub && subCount()">
                     x{{product.count}}
                     <img class="images" src="~assets/img/cart/+.svg" alt="" @click="addCount">
-                    <img class="remove" src="~assets/img/cart/remove.svg" alt="" @click="remove(index)">
+                    <img class="remove" src="~assets/img/cart/remove.svg" alt="" @click="remove(removeIndex)">
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@ export default {
                 return {}
             }
         },
-        index: {
+        removeIndex: {
             type: Number
         }
     },
@@ -61,8 +61,8 @@ export default {
             this.$store.commit('subCount',this.product)
             if(this.product.count === 1) {this.isSub = false}
         },
-        remove(index) {
-            this.$emit('remove',index)
+        remove(removeIndex) {
+            this.$emit('remove',removeIndex)
         }
     }
 }

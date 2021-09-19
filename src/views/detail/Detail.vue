@@ -12,6 +12,7 @@
         </scroll>
         <detail-bottom-bar @addCart='addCart'></detail-bottom-bar>
         <back-top @click.native="backClick" v-show="isShowBacktop" class="back-top"></back-top>
+        <!-- <toast :message="message" :show="show"></toast> -->
     </div>
 </template>
 
@@ -33,6 +34,8 @@ import BackTop from 'components/content/backTop/BackTop'
 import {getDetail,GoodsInfo,Shop,GoodsParam,getRecommend} from 'network/detail'
 import {itemListenerMixin,backTopMixin} from 'common/mixin'
 import {debounce} from 'common/utils'
+import {mapActions} from 'vuex'
+
 
 
 export default {
@@ -96,11 +99,9 @@ export default {
                 this.themeTopY.push(this.$refs.comment.$el.offsetTop)
                 this.themeTopY.push(this.$refs.recommends.$el.offsetTop)
                 /* this.themeTopY.push(Number.MAX_VALUE) */
-                //console.log(this.themeTopY);
+                /* console.log(this.themeTopY); */
         },500)
-    },
-    mounted () {
-            
+        
     },
     destroyed () {
         this.$bus.$off('itemImageLoad',this.itemImgListener)
@@ -116,12 +117,15 @@ export default {
         DetailCommentInfo,
         GoodList,
         DetailBottomBar,
-        BackTop
+        BackTop,
     },
     methods: {
         /*  imageLoad() {
             this.$refs.scroll.refresh()
         }, */
+        ...mapActions({
+            add: 'addCart'
+        }),
         imageLoad() {
             this.$refs.scroll.refresh()
 
@@ -163,7 +167,18 @@ export default {
 
             //this.$store.cartList.push(product)
             //this.$store.commit('addCart',product)
-            this.$store.dispatch('addCart',product)
+            /* this.$store.dispatch('addCart',product).then(res => {
+                console.log(res);
+            }) */
+            this.add(product).then(res => {
+                /* this.show = true;
+                this.message = res;
+
+                setTimeout(() => {
+                    this.show = false
+                }, 1000); */
+                this.$toast.show(res,1500)
+            })
         }
     }
 }

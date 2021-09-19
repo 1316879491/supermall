@@ -13,17 +13,17 @@ export default {
     name:"TabBarItem",
     data () {
         return {
-           
+            
         }
     },
 
     computed: {
-      isactive() {
-          return this.$route.path.indexOf(this.path) !== -1
-      },
-      isactiveColor() {
-          return this.isactive ? {color:this.activeColor} : {}
-      }
+        isactive() {
+            return this.$route.path.indexOf(this.path) !== -1
+        },
+        isactiveColor() {
+            return this.isactive ? {color:this.activeColor} : {}
+        }
     },
 
     props: {

@@ -52,7 +52,7 @@ export default {
             recommends: [],
             itemImgListener: null,
             themeTopY: [],
-            getThemeTopY: null,
+            getThemeTopY: [0,0,0,0],
             currentIndex: 0,
         }
     },
@@ -92,6 +92,10 @@ export default {
             this.recommends = res.data.list
         })
 
+        
+        
+    },
+    mounted () {
         this.getThemeTopY = debounce(() => {
                 this.themeTopY = []
                 this.themeTopY.push(0)
@@ -101,7 +105,6 @@ export default {
                 /* this.themeTopY.push(Number.MAX_VALUE) */
                 /* console.log(this.themeTopY); */
         },500)
-        
     },
     destroyed () {
         this.$bus.$off('itemImageLoad',this.itemImgListener)
@@ -128,8 +131,11 @@ export default {
         }),
         imageLoad() {
             this.$refs.scroll.refresh()
-
-            this.getThemeTopY()
+            if(this.$refs.params.$el!==undefined && this.$refs.comment.$el!==undefined && 
+            this.$refs.recommends.$el!==undefined){
+                this.getThemeTopY()
+            }
+            
         },
         titleClick(index) {
             this.$refs.scroll.scrollTo(0,-this.themeTopY[index]+48,500)

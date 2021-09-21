@@ -1,6 +1,6 @@
 <template>
-    <div class="wrapper" ref="wrapper">
-            <div class="content">
+    <div ref="wrapper">
+            <div>
                 <slot></slot>
             </div>
     </div>
@@ -55,7 +55,7 @@ export default {
         },
         refresh() {
             this.scroll && this.scroll.refresh()
-           /*  console.log(this.scroll); */
+            /* console.log(this.scroll.scrollerHeight); */
         }
     }
 }
